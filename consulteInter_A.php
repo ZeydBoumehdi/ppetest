@@ -42,6 +42,11 @@
       $resultReqInterv = mysqli_query($bdd,$reqInterv);
     }
   }
+
+  if (isset($_POST['submitModal'])){
+    $req = "UPDATE `intervention` SET date_visite=\"".$_POST['dateInterModal']."\",  heure_visite=\"".$_POST['heureInterModal']."\" WHERE numero_intervention =\"".$_SESSION['num_Inter']."\"";
+    $result=mysqli_query($bdd,$req);
+  }
   //inclusion de la connexion à la base de données
   include_once 'db_connect.php';
   //echo (mysqli_error($connexion_a_la_bdd));
@@ -117,12 +122,13 @@
           </div>
 
           
-        </form>
+        
 
         <?php 
         if(isset($_POST['liste_inter']) and isset($_POST['Modifier'])){ 
             $infoInter = explode (" | ", $_POST['liste_inter']);
             $num_Inter = $infoInter[0];
+            $_SESSION['num_Inter'] = $num_Inter;
 
             $reqModifier ="SELECT * FROM intervention , client WHERE intervention.numero_client = client.numero_client and  intervention.numero_intervention =\"".$num_Inter."\"";
             $resultModifier = mysqli_query($bdd,$reqModifier);
@@ -135,29 +141,30 @@
             });
           </script>
 
-        <div class="modal fade" id="Modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modifier l'intervention</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-              </button>
-              </div>
-              <div class="modal-body" >
-                <li>Date : <input type="date" name="datevisite" class="form-control"  value="<?php echo $affiche2['date_visite'] ?>"></li>
-                <li>Heure : <input type="text" name="siren" class="form-control" placeholder="Heure" value="<?php  echo $affiche2['heure_visite'] ?>"></li>     
-              </div>        
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                <button type="submit" class="btn btn-primary" name="submitModal">Valider</button>
+          <div class="modal fade" id="Modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Modifier l'intervention</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body" >
+                  <li>Date : <input type="date" name="dateInterModal" class="form-control"  value="<?php echo $affiche2['date_visite'] ?>"></li>
+                  <li>Heure : <input type="time" name="heureInterModal" class="form-control" value="<?php  echo $affiche2['heure_visite'] ?>"></li>     
+                </div>        
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                  <button type="submit" class="btn btn-primary" name="submitModal">Valider</button>
+                </div>
               </div>
             </div>
-          </div>
-        </div>  
-       <?php 
-          } 
-        ?> 
+          </div>  
+         <?php 
+            } 
+          ?> 
+        </form>
       <br>
       
        <div class="row">
