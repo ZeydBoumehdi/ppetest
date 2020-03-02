@@ -62,10 +62,12 @@
     <div class="container-contact100">
       <div class="wrap-contact100">
       	<h2 style="text-align: center;">Affecter une visite</h2>
-
+        <br>
         <form class="contact100-form validate-form" method="post" action="" autocomplete="off">
           <div class="row">
-            <input type="number" id="numClient" name="numClient" style="width:150px;" placeholder="n°Client" min="1" max="<?php echo $sizeLD?>" required>
+            <div class="offset-md-3 col-4">
+              <input type="number" class="form-control" id="numClient" name="numClient" style="width:150px;" placeholder="n°Client" min="1" max="<?php echo $sizeLD?>" required>
+            </div>
           </div>
 
           <?php if(isset($_POST['submitAffecter']) and isset($_SESSION['numClient'])  ){ ?>
@@ -73,8 +75,9 @@
                 document.getElementById("numClient").setAttribute("value", <?php echo $_SESSION['numClient'] ?>);
                 document.getElementById("numClient").setAttribute("readonly", <?php echo $_SESSION['numClient'] ?>);
             </script>
+            <br>
             <div class="row">
-              <select name="matriculeT" required>
+              <select name="matriculeT" class="form-control" required>
                 <option value="" >--Choisir un technicien--</option>
                   <?php while ($affiche = $resultNomT -> fetch_array(MYSQLI_ASSOC)) { ?>
                     <option value="<?php echo $affiche['nom'];?>"><?php echo $affiche['nom'];?> <?php echo $affiche['prenom'];?></option>
@@ -86,11 +89,11 @@
             </div>
 
             <div class="row">
-              <input type="date" name="date_visite" required>  
+              Date : <input type="date" class="form-control" name="date_visite" required>  
             </div>
 
             <div class="row"> 
-              <input type="text" name="heure_visite" placeholder="Heure" required>
+              Heure :<input type="time" class="form-control" name="heure_visite" placeholder="Heure" required>
             </div>
 
             <?php
@@ -102,28 +105,30 @@
               }
             </script>
 
+          <br>
           <div class="row">
             <div class="offset-md-0 col-4">
-              <button type="submit" class="btn btn-primary" name="submitAffecter">Valider</button>  
+              <button type="submit" class="btn btn-success" name="submitAffecter">Valider</button>  
             </div>
 
             <div class="offset-md-3 col-4">
-              <button type="submit" class="btn btn-primary" onclick="Open()" id="retour" name="submitRetour">Retour</button> 
+              <button type="submit" class="btn btn-success" onclick="Open()" id="retour" name="submitRetour">Retour</button> 
             </div> 
           </div>
 
         </form>
 
         <br>
-        <div class="row">
-          <div class="offset-md-0 col-4">
-            <button type="submit" onclick="location.href='accueil_A.php'" class="btn btn-primary">Accueil</button>
-          </div>
+         <div class="row">
+            <div class="offset-md-0 col-4">
+                <a href='accueil_A.php'><i class="fas fa-arrow-circle-left fa-3x"></i></a>
+            </div>
 
-          <div class="offset-md-3 col-4">
-            <button class="btn btn-primary" onclick="location.href='logout.php'">Déconnexion</button>
-          </div>
+            <div class="offset-md-3 ">
+                <button class="btn btn-danger" onclick="location.href='logout.php'"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+            </div>
         </div>
+        
       </div>
     </div>
 

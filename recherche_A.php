@@ -142,7 +142,6 @@ include_once 'db_connect.php';
 
         <div class="row">
             <div class="offset-md-0 col-4">
-                <!--<button type="submit" onclick="location.href='accueil_A.php'" class="btn btn-success">Accueil</button>-->
                 <a href='accueil_A.php'><i class="fas fa-arrow-circle-left fa-3x"></i></a>
             </div>
 

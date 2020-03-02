@@ -71,7 +71,8 @@
         <form class="contact100-form validate-form" method="post" action="" autocomplete="off">
           <!--<?php #echo $reqInterv ?>-->
           <div class="row">
-            <select name="rechercheT" id="rechercheT">
+            <br>
+            <select name="rechercheT" class="form-control" id="rechercheT">
               <option value="">--Choisir un technicien--</option>
               <?php while ($afficheT = $resultTechnicien -> fetch_array(MYSQLI_ASSOC)){?>
                   <option><?php echo $afficheT['nom']." ".$afficheT['prenom'];?></option>
@@ -80,11 +81,12 @@
           </div>
 
           <div class="row">
-            <input type="date" name="dateInter">
+            Date : <input type="date" class="form-control" name="dateInter">
           </div>
 
+          <br>
           <div class="row">
-            <select multiple class="form-control col-6" size = 5  name = "liste_inter" id = "search">
+            <select multiple class="form-control col-12" size = 5  name = "liste_inter" id = "search">
               <?php 
               if(isset($_POST['rechercheT']) and $_POST['rechercheT']!=""){
                   while($affiche = $resultReqInterv -> fetch_array(MYSQLI_ASSOC)){?>
@@ -101,15 +103,15 @@
               ?>
             </select>
           </div>
-
+          <br>
           <div class="row">
             <div class="offset-md-0 col-4">
-              <button type="submit" class="btn btn-primary" id="ValiderInter" name="submitRechercheInter" class="">Valider</button>
+              <button type="submit" class="btn btn-success" id="ValiderInter" name="submitRechercheInter" class="">Valider</button>
             </div>
 
             <div class="offset-md-3 col-4">
               <div id = "divInter">
-                <button type="submit" class="btn btn-primary" name="Modifier" data-toggle="modal" data-target="#Modal1">Modifier</button>
+                <button type="submit" class="btn btn-success" name="Modifier" data-toggle="modal" data-target="#Modal1">Modifier</button>
               </div>
             </div>
           </div>
@@ -143,8 +145,8 @@
               </button>
               </div>
               <div class="modal-body" >
-                <li><input type="date" name="datevisite" value="<?php echo $affiche2['date_visite'] ?>"></li>
-                <li><input type="text" name="siren" placeholder="Heure" value="<?php  echo $affiche2['heure_visite'] ?>"></li>     
+                <li>Date : <input type="date" name="datevisite" class="form-control"  value="<?php echo $affiche2['date_visite'] ?>"></li>
+                <li>Heure : <input type="text" name="siren" class="form-control" placeholder="Heure" value="<?php  echo $affiche2['heure_visite'] ?>"></li>     
               </div>        
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -158,15 +160,15 @@
         ?> 
       <br>
       
-      <div class="row">
-        <div class="offset-md-0 col-4">
-          <button type="submit" onclick="location.href='accueil_A.php'" class="btn btn-primary">Accueil</button>
-        </div>
+       <div class="row">
+            <div class="offset-md-0 col-4">
+                <a href='accueil_A.php'><i class="fas fa-arrow-circle-left fa-3x"></i></a>
+            </div>
 
-        <div class="offset-md-3 col-4">
-          <button class="btn btn-primary" onclick="location.href='logout.php'">Déconnexion</button>
+            <div class="offset-md-3 ">
+                <button class="btn btn-danger" onclick="location.href='logout.php'"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+            </div>
         </div>
-      </div>
 
     </div>
   </div>

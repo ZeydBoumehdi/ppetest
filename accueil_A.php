@@ -124,7 +124,9 @@ session_start();
           }
         ?>
 
-        <button style = "float:right;" class="btn btn-success" onclick="location.href='logout.php'">Déconnexion</button>
+          <div class="offset-md-7 ">
+            <button class="btn btn-danger" onclick="location.href='logout.php'"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+          </div>
         </div>
     </div>
   </div>

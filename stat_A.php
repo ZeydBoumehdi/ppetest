@@ -56,16 +56,16 @@
 				<h2 style="text-align: center;">Statistique</h2>
 				<form class="contact100-form validate-form" method="post">
 					<div class="row">
-						<select name="tech" id="tech" required>
+						<select name="tech" id="tech" class="form-control" required>
 							<option value="">--Choisir un technicien--</option>
 					        <?php while ($afficheT = $resultTechnicien -> fetch_array(MYSQLI_ASSOC)){?>
 					            <option><?php echo $afficheT['nom']." ".$afficheT['prenom'];?></option>
 					         <?php } ?>
 						</select>
 					</div>
-
+					<br>
 					<div class="row">
-						<select name="mois" id="mois" required>
+						<select name="mois" class="form-control" id="mois" required>
 							<option value="">--Choisir un mois--</option>
 							<option value="1">Janvier</option>
 							<option value="2">Février</option>
@@ -81,16 +81,8 @@
 							<option value="12">Décembre</option>
 						</select>
 					</div>
-
-					<div class="row">
-				        <div class="offset-md-0 col-4">
-				          <button type="submit" name="valider" class="btn btn-primary">Valider</button>
-				        </div>
-
-				        <div class="offset-md-3 col-4">
-				          <button type="submit" onclick="location.href='accueil_A.php'" class="btn btn-primary">Accueil</button>
-				        </div>
-				    </div>
+					<br>
+	
 					<?php if(isset($_POST['valider'])){ 
 						echo $nom_technicien." ".$prenom_technicien;
 						?> pour le mois<?php
@@ -144,18 +136,24 @@
 					<br>
 					Temps passer à contrôler : <?php if (is_null($resultTime['temps'])){ echo "00:00:00";}
 					else echo $resultTime['temps']; } ?>
-				</form>
 
+					<div class="row">
+				        <div class="offset-md-0 col-4">
+				        <br>
+				          <button type="submit" name="valider" class="btn btn-success">Valider</button>
+				        </div>
+					 </div>
+				</form>
 				<br>
 				<div class="row">
-			        <div class="offset-md-0 col-4">
-			          <button type="submit" onclick="location.href='accueil_A.php'" class="btn btn-primary">Accueil</button>
-			        </div>
+		            <div class="offset-md-0 col-4">
+		                <a href='accueil_A.php'><i class="fas fa-arrow-circle-left fa-3x"></i></a>
+		            </div>
 
-			        <div class="offset-md-3 col-4">
-			          <button class="btn btn-primary" onclick="location.href='logout.php'">Déconnexion</button>
-			        </div>
-			    </div>
+		            <div class="offset-md-3 ">
+		                <button class="btn btn-danger" onclick="location.href='logout.php'"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+		            </div>
+		        </div>
 			</div>
 		</div>
 
