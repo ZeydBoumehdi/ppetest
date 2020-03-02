@@ -130,7 +130,13 @@
             </div>
           </div>
         </div>
-        <button style="margin-bottom: 10px; margin-top: 10px;" type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Modifier</button>
+
+
+        <?php  if (isset($_POST['submitRecherche'])){ ?>
+          <button style="margin-bottom: 10px; margin-top: 10px;" type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Modifier</button>
+         <?php
+          }
+        ?>
       </form>
 
       <div class="row">
