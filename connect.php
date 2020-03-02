@@ -33,7 +33,7 @@
                 if ($row['statut']=="Technicien")
 
                 {
-                  header("location: accueil_T.php");
+                  header("location: interV_T.php");
                 }
 
                 if ($row['statut']=="Assistant")
