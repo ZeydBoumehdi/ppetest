@@ -130,7 +130,7 @@ session_start();
           </div>-->
 
           <div class="offset-lg-0">
-           <button class="btn btn-success" onclick="location.href='logout.php'">Déconnexion</button>
+              <button class="btn btn-danger" onclick="location.href='logout.php'"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
           </div>
         </div>
       </div>
