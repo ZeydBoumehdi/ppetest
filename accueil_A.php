@@ -48,28 +48,24 @@ session_start();
           <p align="center"><?php echo $affiche['nom']; ?> <?php echo $affiche['prenom']; ?></p>
 
           <div class="row">
-        	   <button class="btn btn-primary" style="margin: 10px;" onclick="location.href='recherche_A.php'">Page de recherche</button>
+        	   <button class="btn btn-success" style="margin: 10px;" onclick="location.href='recherche_A.php'">Page de recherche</button>
+             <button class="btn btn-success" style="margin: 10px;" onclick="location.href='affecterV_A.php'">Affecter une visite</button>
           </div>
 
           <div class="row">
-             <button class="btn btn-primary" style="margin: 10px;" onclick="location.href='affecterV_A.php'">Affecter une visite</button>
+             <button class="btn btn-success" style="margin: 10px;" onclick="location.href='consulteInter_A.php'">Consulter les interventions</button>
+             <button class="btn btn-success" style="margin: 10px;" onclick="location.href='stat_A.php'">Statistique</button>
           </div>
 
-          <div class="row">
-             <button class="btn btn-primary" style="margin: 10px;" onclick="location.href='consulteInter_A.php'">Consulter les interventions</button>
-          </div>
 
-          <div class="row">
-             <button class="btn btn-primary" style="margin: 10px;" onclick="location.href='stat_A.php'">Statistique</button>
-          </div>
+            <div class="row">
+              <div class="col-12">
+                <form method="post" action ="">
+                  <button style="margin: 10px;" type="submit" class="btn btn-success" name="Contrat" data-toggle="modal" data-target="#ModalA">Le nombre de contrat arrivant à la fin : <?php echo $afficheNbContrat['nbContrat']?></button>
+                </form>
+              </div>
+            </div>
 
-          <div class="row">
-             <form method="post" action ="">
-                <button style="margin: 10px;" type="submit" class="btn btn-primary" name="Contrat" data-toggle="modal" data-target="#ModalA">Le nombre de contrat arrivant à la fin : <?php echo $afficheNbContrat['nbContrat']?></button>
-             </form>
-          </div>
-
-          
 
           <?php 
 
@@ -128,7 +124,7 @@ session_start();
           }
         ?>
 
-        <button class="btn btn-primary" onclick="location.href='logout.php'">Déconnexion</button>
+        <button style = "float:right;" class="btn btn-success" onclick="location.href='logout.php'">Déconnexion</button>
         </div>
     </div>
   </div>

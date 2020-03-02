@@ -52,7 +52,7 @@
 							</div>
 
 							<div class="d-flex justify-content-center mt-3 login_container">
-					 			<button type="submit" name="button" class="btn btn-primary">Connexion</button>
+					 			<button type="submit" name="button" class="btn btn-success">Connexion</button>
 					   		</div>
 						</form>
 					</div>

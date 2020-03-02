@@ -54,10 +54,13 @@
     <div class="container-contact100">
       <div class="wrap-contact100">
         <h2 style="text-align: center;">Rechercher un Client</h2>
-
+<br>
         <form class="contact100-form validate-form" method="post" action="" autocomplete="off">
-          <input type="number" name="recherche" placeholder="n°Client"  min="1" max="<?php echo $sizeLD ?>" style="width:150px;" required>
-          <button type="submit" class="btn btn-primary"  name="submitRecherche" class="">Valider</button>   
+          <div class="row">
+
+            <input type="number" name="recherche" class="form-control" placeholder="n°Client"  min="1" max="<?php echo $sizeLD ?>" style="width:150px; margin-left : 90px;" required>
+            <button type="submit" class="btn btn-success"  name="submitRecherche" style="margin-left : 10px;">Valider</button>   
+          </div>
         </form>
 
       <br/>
@@ -104,19 +107,19 @@
               <div class="modal-body" >
 
               <lo>
-                <li>N°Client: <input type="text" name="numClient" placeholder="N°Client" value="<?php echo $affiche['numero_client']; ?>"></li>
-                <li>Prénom: <input type="text" name="prenom" placeholder="Prenom" value="<?php echo $affiche['prenomC']; ?>"></li>      
-                <li>Nom: <input type="text" name="nom" placeholder="Nom" value="<?php echo $affiche['nomC']; ?>"></li>       
-                <li>Raison sociale: <input type="text" name="raison_sociale" placeholder="Raison sociale" value="<?php echo $affiche['raison_sociale']; ?>"></li>
-                <li>Siren: <input type="text" name="siren" placeholder="Siren" value="<?php echo $affiche['siren']; ?>"></li>
-                <li>Code APE: <input type="text" name="code_ape" placeholder="Code APE" value="<?php echo $affiche['code_APE']; ?>"></li>
-                <li>Adresse: <input type="text" name="adresse" placeholder="Adresse" value="<?php echo $affiche['adresse']; ?>"></li>
-                <li>Téléphone: <input type="text" name="telephone" placeholder="Téléphone" value="<?php echo $affiche['telephone']; ?>"></li>
-                <li>Fax: <input type="text" name="fax" placeholder="Fax" value="<?php echo $affiche['fax']; ?>"></li>
-                <li>Email: <input type="text" name="email" placeholder="Email" value="<?php echo $affiche['email']; ?>"></li>
-                <li>Durée de déplacement: <input type="text" name="duree_deplacement" placeholder="Durée déplacement" value="<?php echo $affiche['duree_deplacement']; ?>"></li>
-                <li>Distance km: <input type="text" name="distance_km" placeholder="Distance kilométrique" value="<?php echo $affiche['distance_km']; ?>"></li>
-                <li>N°Agence: <input type="text" name="numero_agence" placeholder="n°Agence" value="<?php echo $affiche['numero_agence']; ?>"></li>
+                <li>N°Client: <input type="text" class="form-control" name="numClient" placeholder="N°Client" value="<?php echo $affiche['numero_client']; ?>"></li>
+                <li>Prénom: <input type="text" class="form-control" name="prenom" placeholder="Prenom" value="<?php echo $affiche['prenomC']; ?>"></li>      
+                <li>Nom: <input type="text" class="form-control" name="nom" placeholder="Nom" value="<?php echo $affiche['nomC']; ?>"></li>       
+                <li>Raison sociale: <input type="text" class="form-control" name="raison_sociale" placeholder="Raison sociale" value="<?php echo $affiche['raison_sociale']; ?>"></li>
+                <li>Siren: <input type="text" class="form-control" name="siren" placeholder="Siren" value="<?php echo $affiche['siren']; ?>"></li>
+                <li>Code APE: <input type="text" class="form-control" name="code_ape" placeholder="Code APE" value="<?php echo $affiche['code_APE']; ?>"></li>
+                <li>Adresse: <input type="text"  class="form-control" name="adresse" placeholder="Adresse" value="<?php echo $affiche['adresse']; ?>"></li>
+                <li>Téléphone: <input type="text" class="form-control" name="telephone" placeholder="Téléphone" value="<?php echo $affiche['telephone']; ?>"></li>
+                <li>Fax: <input type="text" name="fax"  class="form-control" placeholder="Fax" value="<?php echo $affiche['fax']; ?>"></li>
+                <li>Email: <input type="text" name="email" class="form-control" placeholder="Email" value="<?php echo $affiche['email']; ?>"></li>
+                <li>Durée de déplacement: <input type="text" class="form-control" name="duree_deplacement" placeholder="Durée déplacement" value="<?php echo $affiche['duree_deplacement']; ?>"></li>
+                <li>Distance km: <input type="text" class="form-control" name="distance_km" placeholder="Distance kilométrique" value="<?php echo $affiche['distance_km']; ?>"></li>
+                <li>N°Agence: <input type="text" class="form-control" name="numero_agence" placeholder="n°Agence" value="<?php echo $affiche['numero_agence']; ?>"></li>
               </lo>         
                  
               </div>
@@ -127,16 +130,16 @@
             </div>
           </div>
         </div>
-        <button style="margin-bottom: 10px; margin-top: 10px;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Modifier</button>
+        <button style="margin-bottom: 10px; margin-top: 10px;" type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Modifier</button>
       </form>
 
       <div class="row">
         <div class="offset-md-0 col-4">
-          <button type="submit" onclick="location.href='accueil_A.php'" class="btn btn-primary">Accueil</button>
+          <button type="submit" onclick="location.href='accueil_A.php'" class="btn btn-success">Accueil</button>
         </div>
 
         <div class="offset-md-3 col-4">
-          <button class="btn btn-primary" onclick="location.href='logout.php'">Déconnexion</button>
+          <button class="btn btn-success" onclick="location.href='logout.php'">Déconnexion</button>
         </div>
       </div>
 
