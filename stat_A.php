@@ -54,6 +54,7 @@
 		<div class="container-contact100">
 			<div class="wrap-contact100">
 				<h2 style="text-align: center;">Statistique</h2>
+				<br>
 				<form class="contact100-form validate-form" method="post">
 					<div class="row">
 						<select name="tech" id="tech" class="form-control" required>
