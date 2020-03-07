@@ -1,5 +1,5 @@
 <?php
-    if(isset($_POST['login'])&&isset($_POST['mdp']))
+    if(isset($_POST['login'])&& isset($_POST['mdp']))
 
     {
         session_start();
@@ -22,7 +22,7 @@
         {
 
             //on verifie que le mot de passe est le bon
-            if ($row['mdp']==$mdp) {
+            if ($row['mdp']== md5(sha1(sha1(md5($mdp))))) {
 
                 //on vide toutes les sessions precedentes et on range les bonnes infos dans cette session
                 session_unset();
