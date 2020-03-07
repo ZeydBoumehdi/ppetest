@@ -10,14 +10,18 @@
       //Si un technicien essaie d'acceder aux page assistant il est renvoyé vers la page technicien
   }
 
-  $bdd = mysqli_connect("localhost","root","","ppe");
+  //inclusion de la connexion à la base de données
+  include_once 'db_connect.php';
+  //echo (mysqli_error($connexion_a_la_bdd));
 
   if(isset($_POST['numClient']) and isset($_POST['submitAffecter'])){
     $numClient = $_POST['numClient'];
     $_SESSION['numClient'] = $numClient;
+
     $ReqCodeRegAssis = "SELECT assistant.code_region FROM assistant, utilisateur WHERE assistant.matricule = utilisateur.matricule and  utilisateur.login = \"".$_SESSION['login']."\"";
     $ResultCodeRegAssis = mysqli_query($bdd,$ReqCodeRegAssis);
     $CodeRegAssis = $ResultCodeRegAssis->fetch_array(MYSQLI_ASSOC);
+
     $reqNomT = "SELECT technicien.nom, technicien.prenom FROM technicien, client, agence, assistant WHERE client.numero_agence = technicien.numero_agence and technicien.numero_agence = agence.numero_agence and agence.code_region= assistant.code_region and numero_client =\"".$numClient."\" and assistant.code_region =\"".$CodeRegAssis['code_region']."\"";
     $resultNomT = mysqli_query($bdd,$reqNomT);
   }
@@ -37,9 +41,37 @@
       $req = "INSERT INTO intervention (date_visite, heure_visite, matricule_technicien, numero_client,validation) VALUES (\"".$date."\",\"".$heure."\",\"".$mat['matricule']."\",\"".$_SESSION['numClient']."\",0)";
       $resultReq=mysqli_query($bdd,$req);
   }
-  //inclusion de la connexion à la base de données
-  include_once 'db_connect.php';
-  //echo (mysqli_error($connexion_a_la_bdd));
+
+  if(isset($_POST['boutonPDF']) and isset($_POST['matriculeT']) and isset($_POST['date_visite']) and isset($_POST['heure_visite'])){ 
+      $date = $_POST['date_visite'];
+      $heure = $_POST['heure_visite'];
+
+      $matricule = "SELECT * FROM technicien WHERE nom = \"".$_POST['matriculeT']."\"";
+      $resultMatriculeT = mysqli_query($bdd,$matricule);
+      $mat = $resultMatriculeT->fetch_array(MYSQLI_ASSOC);
+
+      $req = "INSERT INTO intervention (date_visite, heure_visite, matricule_technicien, numero_client,validation) VALUES (\"".$date."\",\"".$heure."\",\"".$mat['matricule']."\",\"".$_SESSION['numClient']."\",0)";
+      $resultReq=mysqli_query($bdd,$req);
+
+      $ReqIntervention = "SELECT * FROM intervention WHERE nom = \"".$_POST['matriculeT']."\" and date_visite = \"".$date."\" and heure_visite = \"".$heure."\" and and numero_client = \"".$_SESSION['numClient']."\" and validation = 0";
+      $resultIntervention = mysqli_query($bdd,$ReqIntervention);
+      $Intervention = $resultIntervention->fetch_array(MYSQLI_ASSOC);
+
+      $ReqClient = "SELECT * FROM client WHERE nom = \"".$_SESSION['numClient']."\"";
+      $resultClient = mysqli_query($bdd,$ReqClient);
+      $Client = $resultClient->fetch_array(MYSQLI_ASSOC);
+
+      $_SESSION['affichePDF'] = $Intervention;
+
+      $_SESSION['afficheTechnicien'] = $mat;
+
+      $_SESSION['afficheClient'] = $Client;
+    ?>
+
+    <script type="text/javascript">window.open('pdf.php');</script>
+    
+    <?php
+  }
 ?>
 
 <!DOCTYPE html>
@@ -99,20 +131,20 @@
             <?php
               }
             ?>
-            <script>
-              function Open() {
-                document.getElementById("retour").value = document.location.href = './affecterV_A.php';
-              }
-            </script>
 
           <br>
+
           <div class="row">
-            <div class="offset-md-0 col-4">
+            <div class="offset-md-0 col-3">
               <button type="submit" class="btn btn-success" name="submitAffecter">Valider</button>  
             </div>
 
-            <div class="offset-md-3 col-4">
-              <button type="submit" class="btn btn-success" onclick="Open()" id="retour" name="submitRetour">Retour</button> 
+            <div class="offset-md-1 col-3">
+              <button target="_blank" type="submit" href="pdf.php" class="btn btn-success" name ="boutonPDF" >PDF</button>
+            </div>
+
+            <div class="offset-md-1 col-3">
+              <button type="submit" class="btn btn-success" onclick="location.href ='./affecterV_A.php'" id="retour" name="submitRetour">Retour</button> 
             </div> 
           </div>
 
@@ -128,7 +160,7 @@
                 <button class="btn btn-danger" onclick="location.href='logout.php'"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
             </div>
         </div>
-        
+
       </div>
     </div>
 
