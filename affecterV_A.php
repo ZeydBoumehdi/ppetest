@@ -53,11 +53,11 @@
       $req = "INSERT INTO intervention (date_visite, heure_visite, matricule_technicien, numero_client,validation) VALUES (\"".$date."\",\"".$heure."\",\"".$mat['matricule']."\",\"".$_SESSION['numClient']."\",0)";
       $resultReq=mysqli_query($bdd,$req);
 
-      $ReqIntervention = "SELECT * FROM intervention WHERE nom = \"".$_POST['matriculeT']."\" and date_visite = \"".$date."\" and heure_visite = \"".$heure."\" and and numero_client = \"".$_SESSION['numClient']."\" and validation = 0";
+      $ReqIntervention = "SELECT * FROM intervention WHERE matricule_technicien = \"".$mat['matricule']."\" and date_visite = \"".$date."\" and heure_visite = \"".$heure."\" and numero_client = \"".$_SESSION['numClient']."\" and validation = 0";
       $resultIntervention = mysqli_query($bdd,$ReqIntervention);
       $Intervention = $resultIntervention->fetch_array(MYSQLI_ASSOC);
 
-      $ReqClient = "SELECT * FROM client WHERE nom = \"".$_SESSION['numClient']."\"";
+      $ReqClient = "SELECT * FROM client WHERE numero_client = \"".$_SESSION['numClient']."\"";
       $resultClient = mysqli_query($bdd,$ReqClient);
       $Client = $resultClient->fetch_array(MYSQLI_ASSOC);
 
@@ -113,7 +113,6 @@
                 <option value="" >--Choisir un technicien--</option>
                   <?php while ($affiche = $resultNomT -> fetch_array(MYSQLI_ASSOC)) { ?>
                     <option value="<?php echo $affiche['nom'];?>"><?php echo $affiche['nom'];?> <?php echo $affiche['prenom'];?></option>
-               
                   <?php 
                     } 
                   ?>
