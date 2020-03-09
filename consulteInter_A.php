@@ -55,31 +55,32 @@
     $infoInter = explode (" | ", $_POST['liste_inter']);
     $num_Inter = $infoInter[0];
 
-    $reqPDF = "SELECT * FROM intervention WHERE numero_intervention = \"".$num_Inter."\"";
-    $resultPDF = mysqli_query($bdd,$reqPDF);
-    $affichePDF = $resultPDF -> fetch_array(MYSQLI_ASSOC);
-
-    $reqTechnicien = "SELECT technicien.nom , technicien.prenom FROM intervention, technicien WHERE  technicien.matricule = intervention.matricule_technicien and numero_intervention = \"".$num_Inter."\"";
+    $reqTechnicien = "SELECT technicien.nom FROM intervention, technicien WHERE  technicien.matricule = intervention.matricule_technicien and numero_intervention = \"".$num_Inter."\"";
     $resultTechnicien = mysqli_query($bdd,$reqTechnicien);
-    $afficheTechnicien = $resultTechnicien -> fetch_array(MYSQLI_ASSOC);
+    $afficheTech = $resultTechnicien -> fetch_array(MYSQLI_ASSOC);
 
-    $reqClient = "SELECT client.nomC , client.prenomC FROM intervention, client WHERE  client.numero_client = intervention.numero_client and numero_intervention = \"".$num_Inter."\"";
-    $resultClient = mysqli_query($bdd,$reqClient);
-    $afficheClient = $resultClient -> fetch_array(MYSQLI_ASSOC);
+    $_SESSION['nom'] = $afficheTech['nom'];
 
-    $_SESSION['affichePDF'] = $affichePDF;
+    $reqTechnicien = "SELECT intervention.heure_visite FROM intervention WHERE numero_intervention = \"".$num_Inter."\"";
+    $resultTechnicien = mysqli_query($bdd,$reqTechnicien);
+    $afficheHeure = $resultTechnicien -> fetch_array(MYSQLI_ASSOC);
 
-    $_SESSION['afficheTechnicien'] = $afficheTechnicien;
+    $_SESSION['heure_visite'] = $afficheHeure['heure_visite'];
 
-    $_SESSION['afficheClient'] = $afficheClient;
+    $reqTechnicien = "SELECT intervention.date_visite FROM intervention WHERE numero_intervention = \"".$num_Inter."\"";
+    $resultTechnicien = mysqli_query($bdd,$reqTechnicien);
+    $afficheDate = $resultTechnicien -> fetch_array(MYSQLI_ASSOC);
+
+    $_SESSION['date_visite'] = $afficheDate['date_visite'];
 
     $reqTechnicien= "SELECT technicien.nom, technicien.prenom FROM technicien, agence, assistant WHERE assistant.code_region = agence.code_region and technicien.numero_agence = agence.numero_agence and assistant.code_region = \"".$CodeRegAssis['code_region']."\"";
     $resultTechnicien = mysqli_query($bdd,$reqTechnicien);
+
   ?>
 
     <script type="text/javascript">window.open('pdf.php');</script>
     
-    <?php
+  <?php
   }
 ?>
 
@@ -234,13 +235,13 @@
       <br>
       
        <div class="row">
-            <div class="offset-md-0 col-4">
-                <a href='accueil_A.php'><i class="fas fa-arrow-circle-left fa-3x"></i></a>
-            </div>
+          <div class="offset-md-0 col-4">
+              <a href='accueil_A.php'><i class="fas fa-arrow-circle-left fa-3x"></i></a>
+          </div>
 
-            <div class="offset-md-3 ">
-                <button class="btn btn-danger" onclick="location.href='logout.php'"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
-            </div>
+          <div class="offset-md-3">
+              <button class="btn btn-danger" onclick="location.href='logout.php'"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+          </div>
         </div>
 
     </div>

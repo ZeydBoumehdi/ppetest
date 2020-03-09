@@ -30,37 +30,6 @@ $reqClientMax = "SELECT * FROM client";
 $resultClientMax=mysqli_query($bdd,$reqClientMax);
 $sizeLD=mysqli_num_rows($resultClientMax);
 
-
-if(isset($_POST['boutonPDF']) and isset($_POST['matriculeT']) and isset($_POST['date_visite']) and isset($_POST['heure_visite'])){
-    $date = $_POST['date_visite'];
-    $heure = $_POST['heure_visite'];
-
-    $matricule = "SELECT * FROM technicien WHERE nom = \"".$_POST['matriculeT']."\"";
-    $resultMatriculeT = mysqli_query($bdd,$matricule);
-    $mat = $resultMatriculeT->fetch_array(MYSQLI_ASSOC);
-
-    $req = "INSERT INTO intervention (date_visite, heure_visite, matricule_technicien, numero_client,validation) VALUES (\"".$date."\",\"".$heure."\",\"".$mat['matricule']."\",\"".$_SESSION['numClient']."\",0)";
-    $resultReq=mysqli_query($bdd,$req);
-
-    $ReqIntervention = "SELECT * FROM intervention WHERE matricule_technicien = \"".$mat['matricule']."\" and date_visite = \"".$date."\" and heure_visite = \"".$heure."\" and numero_client = \"".$_SESSION['numClient']."\" and validation = 0";
-    $resultIntervention = mysqli_query($bdd,$ReqIntervention);
-    $Intervention = $resultIntervention->fetch_array(MYSQLI_ASSOC);
-
-    $ReqClient = "SELECT * FROM client WHERE numero_client = \"".$_SESSION['numClient']."\"";
-    $resultClient = mysqli_query($bdd,$ReqClient);
-    $Client = $resultClient->fetch_array(MYSQLI_ASSOC);
-
-    $_SESSION['affichePDF'] = $Intervention;
-
-    $_SESSION['afficheTechnicien'] = $mat;
-
-    $_SESSION['afficheClient'] = $Client;
-    ?>
-
-    <script type="text/javascript">window.open('pdf.php');</script>
-
-    <?php
-}
 ?>
 
 <!DOCTYPE html>
@@ -122,7 +91,7 @@ if(isset($_POST['boutonPDF']) and isset($_POST['matriculeT']) and isset($_POST['
 
             <br>
             <?php
-            if(isset($_POST['submitAffecter']) and isset($_POST['matriculeT']) and isset($_POST['date_visite']) and isset($_POST['heure_visite']) and is_numeric($_SESSION['numClient'])){
+            if((isset($_POST['submitAffecter']) or isset($_POST['boutonPDF'])) and isset($_POST['matriculeT']) and isset($_POST['date_visite']) and isset($_POST['heure_visite']) and is_numeric($_SESSION['numClient'])){
                 $date = $_POST['date_visite'];
                 $heure = $_POST['heure_visite'];
 
@@ -157,32 +126,48 @@ if(isset($_POST['boutonPDF']) and isset($_POST['matriculeT']) and isset($_POST['
                     <div class="alert alert-danger col-12" role="alert" style="text-align:center" id = "alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         Le client n°<?php echo $_SESSION['numClient']; ?> a déjà une intervention programmée !
-    </div>
+                    </div>
+           <?php }else{
+                if(isset($_POST['boutonPDF']) and isset($_POST['matriculeT']) and isset($_POST['date_visite']) and isset($_POST['heure_visite'])){
+                    $_SESSION['date_visite'] = $_POST['date_visite'];
+                    $_SESSION['heure_visite'] = $_POST['heure_visite'];
+                    $_SESSION['nom'] = $_POST['matriculeT'];
 
-           <?php } ?>
+                    ?>
+                        <script type="text/javascript">window.open('pdf.php');</script>
+                    <?php
+                }
+           } ?>
+
             <div class="row">
-                <div class="offset-md-0 col-3">
-                    <button type="submit" class="btn btn-success" name="submitAffecter">Valider</button>
-                </div>
-
-                <div class="offset-md-1 col-3">
-                    <button target="_blank" type="submit" href="pdf.php" class="btn btn-success" name ="boutonPDF" >PDF</button>
-                </div>
-
-                <div class="offset-md-1 col-3">
-                    <button type="submit" class="btn btn-success" onclick="location.href ='./affecterV_A.php'" id="retour" name="submitRetour">Retour</button>
-                </div>
+            <div class="offset-md-4 col-3">
+              <button type="submit" class="btn btn-success" name="submitAffecter" id="submitAffecter">Valider</button>  
             </div>
+
+          <?php if(isset($_POST['submitAffecter'])){ ?>
+            <script>
+                document.getElementById("submitAffecter").setAttribute("hidden",true);
+                document.getElementById("submitAffecter").setAttribute("disabled",true);
+            </script>
+
+            <div class="offset-md-0 col-6">
+              <button target="_blank" type="submit" href="pdf.php" class="btn btn-success" id ="boutonPDF" name ="boutonPDF" >Valider / PDF</button>
+            </div>
+
+            <div class="offset-md-1 col-3">
+              <button type="submit" class="btn btn-success" onclick="location.href ='./affecterV_A.php'" id="retour" name="submitRetour">Retour</button> 
+            </div> 
+          <?php } ?>
 
         </form>
 
         <br>
+
         <div class="row">
-            <div class="offset-md-0 col-4">
+            <div class="offset-sx-0 col-4">
                 <a href='accueil_A.php'><i class="fas fa-arrow-circle-left fa-3x"></i></a>
             </div>
-
-            <div class="offset-md-3 ">
+            <div class="offset-sx-0">
                 <button class="btn btn-danger" onclick="location.href='logout.php'"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
             </div>
         </div>
@@ -190,8 +175,8 @@ if(isset($_POST['boutonPDF']) and isset($_POST['matriculeT']) and isset($_POST['
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
-</html> 
+</html>
