@@ -46,6 +46,7 @@ $sizeLD=mysqli_num_rows($resultClientMax);
 
     <link rel="stylesheet" type="text/css" href="css/util.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="icon" href="logo.ico" />
 </head>
 
 <body>
