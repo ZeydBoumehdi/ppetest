@@ -152,7 +152,7 @@
               <button type="submit" class="btn btn-success" onclick="location.href ='./affecterV_A.php'" id="retour" name="submitRetour">Retour</button> 
             </div> 
           <?php } ?>
-          
+
           </div>
 
         </form>
