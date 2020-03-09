@@ -1,5 +1,6 @@
 <?php
   session_start();
+
   if (!isset ($_SESSION['login'])) {
     header("location: index.php");
     //Si une personne non connecter essaie d'acceder a la page il est renvoyé vers index.php
@@ -8,7 +9,9 @@
     //Si un technicien essaie d'acceder aux page assistant il est renvoyé vers la page technicien
   }
 
-  $bdd = mysqli_connect("localhost","root","","ppe");
+  //inclusion de la connexion à la base de données
+  include_once 'db_connect.php';
+  //echo (mysqli_error($connexion_a_la_bdd));
 
   $ReqCodeRegAssis = "SELECT assistant.code_region FROM assistant, utilisateur WHERE assistant.matricule = utilisateur.matricule and utilisateur.login = \"".$_SESSION['login']."\"";
   $ResultCodeRegAssis = mysqli_query($bdd,$ReqCodeRegAssis);
@@ -47,9 +50,37 @@
     $req = "UPDATE `intervention` SET date_visite=\"".$_POST['dateInterModal']."\",  heure_visite=\"".$_POST['heureInterModal']."\" WHERE numero_intervention =\"".$_SESSION['num_Inter']."\"";
     $result=mysqli_query($bdd,$req);
   }
-  //inclusion de la connexion à la base de données
-  include_once 'db_connect.php';
-  //echo (mysqli_error($connexion_a_la_bdd));
+
+  if(isset($_POST['liste_inter']) and isset($_POST['boutonPDF'])){ 
+    $infoInter = explode (" | ", $_POST['liste_inter']);
+    $num_Inter = $infoInter[0];
+
+    $reqPDF = "SELECT * FROM intervention WHERE numero_intervention = \"".$num_Inter."\"";
+    $resultPDF = mysqli_query($bdd,$reqPDF);
+    $affichePDF = $resultPDF -> fetch_array(MYSQLI_ASSOC);
+
+    $reqTechnicien = "SELECT technicien.nom , technicien.prenom FROM intervention, technicien WHERE  technicien.matricule = intervention.matricule_technicien and numero_intervention = \"".$num_Inter."\"";
+    $resultTechnicien = mysqli_query($bdd,$reqTechnicien);
+    $afficheTechnicien = $resultTechnicien -> fetch_array(MYSQLI_ASSOC);
+
+    $reqClient = "SELECT client.nomC , client.prenomC FROM intervention, client WHERE  client.numero_client = intervention.numero_client and numero_intervention = \"".$num_Inter."\"";
+    $resultClient = mysqli_query($bdd,$reqClient);
+    $afficheClient = $resultClient -> fetch_array(MYSQLI_ASSOC);
+
+    $_SESSION['affichePDF'] = $affichePDF;
+
+    $_SESSION['afficheTechnicien'] = $afficheTechnicien;
+
+    $_SESSION['afficheClient'] = $afficheClient;
+
+    $reqTechnicien= "SELECT technicien.nom, technicien.prenom FROM technicien, agence, assistant WHERE assistant.code_region = agence.code_region and technicien.numero_agence = agence.numero_agence and assistant.code_region = \"".$CodeRegAssis['code_region']."\"";
+    $resultTechnicien = mysqli_query($bdd,$reqTechnicien);
+  ?>
+
+    <script type="text/javascript">window.open('pdf.php');</script>
+    
+    <?php
+  }
 ?>
 
 <!DOCTYPE html>
@@ -74,29 +105,48 @@
         <h3 style="text-align: center;">Consulter les interventions</h3>
         <br>
         <form class="contact100-form validate-form" method="post" action="" autocomplete="off">
-          <!--<?php #echo $reqInterv ?>-->
           <div class="row">
             <br>
-            <select name="rechercheT" class="form-control" id="rechercheT">
+            <select id="rechercheT" name="rechercheT" class="form-control">
               <option value="">--Choisir un technicien--</option>
               <?php while ($afficheT = $resultTechnicien -> fetch_array(MYSQLI_ASSOC)){?>
-                  <option><?php echo $afficheT['nom']." ".$afficheT['prenom'];?></option>
+                  <option value="<?php echo $afficheT['nom']." ".$afficheT['prenom'];?>"><?php echo $afficheT['nom']." ".$afficheT['prenom'];?></option>
                <?php } ?>
             </select>
           </div>
 
-          <div class="row">
+          <div class="row" id="dateInter">
             Date : <input type="date" class="form-control" name="dateInter">
           </div>
 
+            <?php if(isset($_POST['submitRechercheInter'])){?>
+              <script>      
+                document.getElementById("rechercheT").setAttribute("disabled", true);
+                document.getElementById("rechercheT").setAttribute("hidden", true);
+
+                document.getElementById("dateInter").setAttribute("disabled", true);
+                document.getElementById("dateInter").setAttribute("hidden", true);
+              </script>
+              <?php  
+              if(isset($_POST['rechercheT']) and $_POST['rechercheT']!=""){
+                echo "Technicien :"." ".$_POST['rechercheT']."<br/>";
+                  if($_POST['dateInter']!=""){
+                    echo "Date:"." ".$_POST['dateInter']."<br/>";
+                  }
+                }else if($_POST['rechercheT']=="" and $_POST['dateInter']!=""){
+                   echo "Date :"." ".$_POST['dateInter']."<br/>"; 
+                }
+              } 
+            ?>
           <br>
           <div class="row">
             <select multiple class="form-control col-12" size = 5  name = "liste_inter" id = "search">
               <?php 
               if(isset($_POST['rechercheT']) and $_POST['rechercheT']!=""){
+                $_SESSION['rechercheT'] = $_POST['rechercheT']; 
                   while($affiche = $resultReqInterv -> fetch_array(MYSQLI_ASSOC)){?>
                   <option><?php echo $affiche['numero_intervention']." | ".$affiche['date_visite']." | ".$affiche['heure_visite']." | ".$affiche['nomC']." ".$affiche['prenomC']?></option>
-                  <?php 
+                  <?php
                     } 
                   } 
               if($_POST['rechercheT']=="" and $_POST['dateInter']!=""){
@@ -107,33 +157,49 @@
               }          
               ?>
             </select>
+            
           </div>
+
           <br>
-          <div class="row">
-            <div class="offset-md-0 col-4">
-              <button type="submit" class="btn btn-success" id="ValiderInter" name="submitRechercheInter" class="">Valider</button>
-            </div>
 
-            <div class="offset-md-3 col-4">
-              <div id = "divInter">
-                <button type="submit" class="btn btn-success" name="Modifier" data-toggle="modal" data-target="#Modal1">Modifier</button>
-              </div>
+          <div class="row">
+            <div class="offset-md-4 col-3">
+              <button type="submit" class="btn btn-success" id="ValiderInter" name="submitRechercheInter">Valider</button>
             </div>
           </div>
 
-          
-        
+          <div class="row">
+          <?php if(isset($_POST['submitRechercheInter'])){?>
+            <script>      
+              document.getElementById("ValiderInter").setAttribute("hidden", true);
+              document.getElementById("ValiderInter").setAttribute("disabled",true);
+            </script>
+
+            <div class="offset-md-0 col-3">
+              <button type="submit" class="btn btn-success" name="Modifier" data-toggle="modal" data-target="#Modal1">Modifier</button>
+            </div>
+
+            <div class="offset-md-1 col-3">
+              <button target="_blank" type="submit" href="pdf.php" class="btn btn-success" name ="boutonPDF" >PDF</button>
+            </div>
+
+            <div class="offset-md-1 col-3">
+              <button type="submit" class="btn btn-success" onclick="location.href ='./consulteInter_A.php'" id="retour" name="submitRetour">Retour</button> 
+            </div> 
+          <?php } ?>
+
+          </div>
 
         <?php 
         if(isset($_POST['liste_inter']) and isset($_POST['Modifier'])){ 
-            $infoInter = explode (" | ", $_POST['liste_inter']);
-            $num_Inter = $infoInter[0];
-            $_SESSION['num_Inter'] = $num_Inter;
+          $infoInter = explode (" | ", $_POST['liste_inter']);
+          $num_Inter = $infoInter[0];
+          $_SESSION['num_Inter'] = $num_Inter;
 
-            $reqModifier ="SELECT * FROM intervention , client WHERE intervention.numero_client = client.numero_client and  intervention.numero_intervention =\"".$num_Inter."\"";
-            $resultModifier = mysqli_query($bdd,$reqModifier);
-            $affiche2 = $resultModifier -> fetch_array(MYSQLI_ASSOC);
-          ?>
+          $reqModifier ="SELECT * FROM intervention , client WHERE intervention.numero_client = client.numero_client and  intervention.numero_intervention =\"".$num_Inter."\"";
+          $resultModifier = mysqli_query($bdd,$reqModifier);
+          $affiche2 = $resultModifier -> fetch_array(MYSQLI_ASSOC);
+        ?>
 
           <script>
             $( document ).ready(function() {
