@@ -134,17 +134,25 @@
           <br>
 
           <div class="row">
-            <div class="offset-md-0 col-3">
-              <button type="submit" class="btn btn-success" name="submitAffecter">Valider</button>  
+            <div class="offset-md-4 col-3">
+              <button type="submit" class="btn btn-success" name="submitAffecter" id="submitAffecter">Valider</button>  
             </div>
 
-            <div class="offset-md-1 col-3">
-              <button target="_blank" type="submit" href="pdf.php" class="btn btn-success" name ="boutonPDF" >PDF</button>
+          <?php if(isset($_POST['submitAffecter'])){ ?>
+            <script>
+                document.getElementById("submitAffecter").setAttribute("hidden",true);
+                document.getElementById("submitAffecter").setAttribute("disabled",true);
+            </script>
+
+            <div class="offset-md-0 col-6">
+              <button target="_blank" type="submit" href="pdf.php" class="btn btn-success" name ="boutonPDF" >Valider / PDF</button>
             </div>
 
             <div class="offset-md-1 col-3">
               <button type="submit" class="btn btn-success" onclick="location.href ='./affecterV_A.php'" id="retour" name="submitRetour">Retour</button> 
             </div> 
+          <?php } ?>
+          
           </div>
 
         </form>
