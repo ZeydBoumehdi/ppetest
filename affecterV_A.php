@@ -163,7 +163,7 @@ $sizeLD=mysqli_num_rows($resultClientMax);
         </form>
 
         <br>
-
+        <br>
     </div>
 
     <div class="row">
