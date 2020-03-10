@@ -132,11 +132,11 @@ $sizeLD=mysqli_num_rows($resultClientMax);
                 if(isset($_POST['boutonPDF']) and isset($_POST['matriculeT']) and isset($_POST['date_visite']) and isset($_POST['heure_visite'])){
                     $_SESSION['date_visite'] = $_POST['date_visite'];
                     $_SESSION['heure_visite'] = $_POST['heure_visite'];
-                    $_SESSION['nom'] = $_POST['matriculeT'];
+                    $_SESSION['nom'] = $_POST['matriculeT'];?>
 
-                    ?>
-                        <script type="text/javascript">window.open('pdf.php');</script>
-                    <?php
+                    <script type="text/javascript">window.open('pdf.php');</script> 
+
+                    <?php 
                 }
            } ?>
 
@@ -152,7 +152,7 @@ $sizeLD=mysqli_num_rows($resultClientMax);
             </script>
 
             <div class="offset-md-0 col-6">
-              <button target="_blank" type="submit" href="pdf.php" class="btn btn-success" id ="boutonPDF" name ="boutonPDF" >Valider / PDF</button>
+              <button  type="submit" class="btn btn-success" id ="boutonPDF" name ="boutonPDF" >Valider / PDF</button>
             </div>
 
             <div class="offset-md-1 col-3">
@@ -164,15 +164,15 @@ $sizeLD=mysqli_num_rows($resultClientMax);
 
         <br>
 
-        <div class="row">
-            <div class="offset-sx-0 col-4">
-                <a href='accueil_A.php'><i class="fas fa-arrow-circle-left fa-3x"></i></a>
-            </div>
-            <div class="offset-sx-0">
-                <button class="btn btn-danger" onclick="location.href='logout.php'"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
-            </div>
-        </div>
+    </div>
 
+    <div class="row">
+        <div class="offset-md-0 col-4">
+            <a href='accueil_A.php'><i class="fas fa-arrow-circle-left fa-3x"></i></a>
+        </div>
+        <div class="offset-md-3">
+            <button class="btn btn-danger" onclick="location.href='logout.php'"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+        </div>
     </div>
 </div>
 

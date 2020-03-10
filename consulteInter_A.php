@@ -79,12 +79,24 @@
     $_SESSION['date_visite'] = $afficheDate['date_visite'];
 
     $reqTechnicien= "SELECT technicien.nom, technicien.prenom FROM technicien, agence, assistant WHERE assistant.code_region = agence.code_region and technicien.numero_agence = agence.numero_agence and assistant.code_region = \"".$CodeRegAssis['code_region']."\"";
-    $resultTechnicien = mysqli_query($bdd,$reqTechnicien);
-  ?>
+    $resultTechnicien = mysqli_query($bdd,$reqTechnicien); 
+    ?>
 
-    <script type="text/javascript">window.open('pdf.php');</script>
-    
-  <?php
+      <script type="text/javascript">window.open('pdf.php');</script> 
+
+    <?php 
+  }
+
+  if((isset($_POST['boutonPDF']) or isset($_POST['Modifier'])) and !isset($_POST['liste_inter'])){
+    ?>
+    <script type="text/javascript"> alert("Veuillez sélectionner une intervention !");</script>
+    <?php
+  }
+
+  if(isset($_POST['submitRechercheInter']) and ($_POST['rechercheT']=="" and $_POST['dateInter']=="")){
+    ?>
+    <script type="text/javascript"> alert("Veuillez sélectionner un technicien / une date !");</script>
+    <?php
   }
 ?>
 
@@ -124,7 +136,7 @@
             Date : <input type="date" class="form-control" name="dateInter">
           </div>
 
-            <?php if(isset($_POST['submitRechercheInter'])){?>
+            <?php if(isset($_POST['submitRechercheInter']) and ($_POST['rechercheT']!="" or $_POST['dateInter']!="")){?>
               <script>      
                 document.getElementById("rechercheT").setAttribute("disabled", true);
                 document.getElementById("rechercheT").setAttribute("hidden", true);
@@ -143,6 +155,7 @@
                 }
               } 
             ?>
+
           <br>
           <div class="row">
             <select multiple class="form-control col-12" size = 5  name = "liste_inter" id = "search">
@@ -174,7 +187,7 @@
           </div>
 
           <div class="row">
-          <?php if(isset($_POST['submitRechercheInter'])){?>
+          <?php if(isset($_POST['submitRechercheInter']) and ($_POST['rechercheT']!="" or $_POST['dateInter']!="")){?>
             <script>      
               document.getElementById("ValiderInter").setAttribute("hidden", true);
               document.getElementById("ValiderInter").setAttribute("disabled",true);
@@ -185,7 +198,7 @@
             </div>
 
             <div class="offset-md-1 col-3">
-              <button target="_blank" type="submit" href="pdf.php" class="btn btn-success" name ="boutonPDF" >PDF</button>
+              <button  type="submit" class="btn btn-success" name ="boutonPDF" >PDF</button>
             </div>
 
             <div class="offset-md-1 col-3">
@@ -196,7 +209,7 @@
           </div>
 
         <?php 
-        if(isset($_POST['liste_inter']) and isset($_POST['Modifier'])){ 
+        if(isset($_POST['liste_inter'])  and isset($_POST['Modifier'])){ 
           $infoInter = explode (" | ", $_POST['liste_inter']);
           $num_Inter = $infoInter[0];
           $_SESSION['num_Inter'] = $num_Inter;
@@ -216,7 +229,7 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Modifier l'intervention</h5>
+                  <h5 class="modal-title" id="exampleModalLabel">Modifier l'intervention n°<?php echo $num_Inter?></h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -233,7 +246,8 @@
             </div>
           </div>  
          <?php 
-            } 
+            $num_Inter = null;
+          }
           ?> 
         </form>
       <br>
