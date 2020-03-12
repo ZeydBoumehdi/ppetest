@@ -8,7 +8,10 @@ session_start();
     //Si un assistant essaie d'acceder aux page technicien il est renvoyé vers la page assistant
   }
 
-  $bdd = mysqli_connect("localhost","root","","ppe");
+  //inclusion de la connexion à la base de données
+  include_once 'db_connect.php';
+  //echo (mysqli_error($connexion_a_la_bdd));
+
   $nomA = "SELECT nom , prenom FROM utilisateur, technicien Where technicien.matricule = utilisateur.matricule and login =\"".$_SESSION['login']."\"";
   $reqNom = mysqli_query($bdd,$nomA);
   $name = $reqNom->fetch_array(MYSQLI_ASSOC);
@@ -53,8 +56,6 @@ session_start();
         <?php 
         }
     }
-
-  include_once 'db_connect.php';
 ?>
 
 <!DOCTYPE html>
@@ -86,7 +87,7 @@ session_start();
                         <option><?php echo $affiche['numero_intervention']." | ".$affiche['date_visite']." | ".$affiche['heure_visite']." | ".$affiche['nomC']." ".$affiche['prenomC']?></option>
                      <?php } ?>
                 </select><br>
-                <input type="number" class="form-control" name="numMachine" id="numMachine" placeholder="Nombre de machine" min="1">
+                <input type="number" class="form-control" name="numMachine" id="numMachine" placeholder="Nombre de machine" min="1" required>
                 <input type="number" name="total" value="0" hidden><br>
                 <button type="submit" id="btnVal2" class="btn btn-success" name="valider1">Valider</button>
                 <button type="submit" class="btn btn-success" name="Visualiser" data-toggle="modal" data-target="#exampleModal">Visualiser</button>
@@ -104,13 +105,14 @@ session_start();
                 <?php
                 if($_SESSION['total'] < $_SESSION['numMachine']){?>
                     <div class="form-group">
-                      <input type="number" class="form-control" name="<?php echo "numSerie".$_SESSION['total'] ?>" placeholder="Numéro de série" min="1" required>
+                      <p><?php echo ($_SESSION['total']+1)." / ".$_SESSION['numMachine'] ;?></p>
+                      <input type="number" class="form-control" name="<?php echo "numSerie". $_SESSION['total'] ?>" placeholder="Numéro de série" min="1" required>
                     </div>
                     <div class="form-group">
-                      <textarea class="form-control" name="<?php echo "Commentaire".$_SESSION['total'] ?>" rows="3" required ></textarea>
+                      Commentaire :<textarea class="form-control" name="<?php echo "Commentaire".$_SESSION['total'] ?>" rows="3" required ></textarea>
                     </div>
                     <div class="form-group">
-                      <input type="time" class="form-control" name="<?php echo "nbHeure".$_SESSION['total'] ?>" placeholder="Temps d'intervention" required >
+                      Heure :<input type="time" class="form-control" name="<?php echo "nbHeure".$_SESSION['total'] ?>" required >
                     </div>
                     <div class="modal-footer">
                       <input type="number" name="ajouter" value="1" hidden>
@@ -122,12 +124,6 @@ session_start();
               }
             ?>
             </form><br>
-
-          <!--<div class="row">
-            <div class="offset-md-0 col-4">
-              <button type="submit" onclick="location.href='accueil_T.php'" class="btn btn-success">Accueil</button>
-              <a href='accueil_T.php'><i class="fas fa-arrow-circle-left fa-3x"></i></a>
-          </div>-->
 
           <div class="offset-lg-0">
               <button class="btn btn-danger" onclick="location.href='logout.php'"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
@@ -164,7 +160,10 @@ session_start();
               <div class="modal-body" >
                 <p>Nom: <?php echo $affiche2['nomC'];?></p>
                 <p>Prenom: <?php echo $affiche2['prenomC'];?></p>
-                <p>Adresse: <?php echo $affiche2['adresse'];?></p>       
+                <p>Adresse: <?php echo $affiche2['adresse'];?></p>   
+                <p>Téléphone: <?php echo $affiche2['telephone'];?></p> 
+                <p>Durée déplacement: <?php echo $affiche2['duree_deplacement']." min";?></p>
+                <p>Distance kilométrique: <?php echo $affiche2['distance_km']." km";?></p>      
               </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
